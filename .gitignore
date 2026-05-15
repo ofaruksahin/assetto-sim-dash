@@ -1,0 +1,28 @@
+## .NET / ASP.NET Core
+bin/
+obj/
+*.user
+*.suo
+*.vs/
+.vs/
+*.log
+
+## Build & publish
+[Pp]ublish/
+[Rr]elease/
+[Dd]ebug/
+*.nupkg
+
+## Rider / VS / VS Code
+.idea/
+*.swp
+*.swo
+.vscode/
+
+## OS
+Thumbs.db
+.DS_Store
+
+## Claude Code
+.claude/settings.local.json
+.claude/worktrees/

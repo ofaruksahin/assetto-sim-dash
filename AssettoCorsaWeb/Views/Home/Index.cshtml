@@ -1,0 +1,369 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="offline-banner" class="offline-banner">
+    <span class="pulse-dot"></span> Assetto Corsa bekleniyor...
+</div>
+<div id="redline-overlay" class="redline-overlay"></div>
+
+<div class="dashboard" id="dashboard">
+
+    <!-- ── Header Bar ──────────────────────────────────────────────────── -->
+    <div class="header-bar">
+        <div class="header-top">
+            <div class="header-left">
+                <span class="car-name" id="hdr-car">—</span>
+                <span class="sep">|</span>
+                <span id="hdr-track">—</span>
+            </div>
+            <div class="header-center">
+                <span class="badge" id="hdr-session">—</span>
+                <span class="badge" id="hdr-status">—</span>
+            </div>
+            <div class="header-right">
+                <span id="hdr-player">—</span>
+                <span class="sep">|</span>
+                <span id="hdr-position">P—</span>
+                <span class="sep">|</span>
+                <span id="hdr-lap">Tur —</span>
+            </div>
+        </div>
+        <div class="times-row">
+            <div class="t-item">
+                <div class="t-lbl">GÜNCEL</div>
+                <div class="t-val" id="t-current">—:——.———</div>
+            </div>
+            <div class="t-item best">
+                <div class="t-lbl">EN İYİ</div>
+                <div class="t-val" id="t-best">—:——.———</div>
+            </div>
+            <div class="t-item">
+                <div class="t-lbl">SON TUR</div>
+                <div class="t-val" id="t-last">—:——.———</div>
+            </div>
+            <div class="t-item">
+                <div class="t-lbl">YAKIT/TUR</div>
+                <div class="t-val" id="t-fuelxlap">—.— L</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Shift Lights ────────────────────────────────────────────────── -->
+    <div class="shift-lights" id="shift-lights">
+        <div class="sl-dot sl-green" id="sl-0"></div>
+        <div class="sl-dot sl-green" id="sl-1"></div>
+        <div class="sl-dot sl-green" id="sl-2"></div>
+        <div class="sl-dot sl-green" id="sl-3"></div>
+        <div class="sl-dot sl-amber" id="sl-4"></div>
+        <div class="sl-dot sl-amber" id="sl-5"></div>
+        <div class="sl-dot sl-red"   id="sl-6"></div>
+        <div class="sl-dot sl-red"   id="sl-7"></div>
+        <div class="sl-dot sl-red"   id="sl-8"></div>
+        <div class="sl-dot sl-red"   id="sl-9"></div>
+    </div>
+
+    <!-- ── Gauges Row (Speed | Gear | RPM) ────────────────────────────── -->
+    <div class="gauges-row">
+
+        <!-- Speed Gauge -->
+        <div class="gauge-panel">
+            <div class="gauge-lbl">HIZ</div>
+            <div class="gauge-svg-wrap">
+                <svg class="gauge-svg" viewBox="0 0 200 170" id="gauge-speed">
+                    <g id="speed-ticks"></g>
+                    <circle class="g-track" cx="100" cy="100" r="80"/>
+                    <circle class="g-fill"  id="speed-fill" cx="100" cy="100" r="80"/>
+                    <line   class="g-needle" id="speed-needle" x1="100" y1="100" x2="100" y2="26"/>
+                    <circle class="g-hub-o" cx="100" cy="100" r="9"/>
+                    <circle class="g-hub-i" cx="100" cy="100" r="5"/>
+                </svg>
+            </div>
+            <div class="gauge-overlay">
+                <div class="g-val"  id="speed-val">0</div>
+                <div class="g-unit">km/h</div>
+                <div class="g-sub"  id="speed-mph">0 mph</div>
+            </div>
+        </div>
+
+        <!-- Gear Display -->
+        <div class="gear-panel">
+            <div class="gear-lbl">VİTES</div>
+            <div class="gear-num" id="gear-num">N</div>
+            <div class="gear-badges">
+                <span class="gbadge orange" id="gear-pit-lim">PIT</span>
+                <span class="gbadge drs"    id="gear-drs">DRS</span>
+            </div>
+        </div>
+
+        <!-- RPM Gauge -->
+        <div class="gauge-panel">
+            <div class="gauge-lbl">DEVİR</div>
+            <div class="gauge-svg-wrap">
+                <svg class="gauge-svg" viewBox="0 0 200 170" id="gauge-rpm">
+                    <g id="rpm-ticks"></g>
+                    <circle class="g-track"   cx="100" cy="100" r="80"/>
+                    <circle class="g-fill"    id="rpm-fill"    cx="100" cy="100" r="80"/>
+                    <path   class="g-redline" id="rpm-redline"/>
+                    <line   class="g-needle"  id="rpm-needle"  x1="100" y1="100" x2="100" y2="26"/>
+                    <circle class="g-hub-o" cx="100" cy="100" r="9"/>
+                    <circle class="g-hub-i" cx="100" cy="100" r="5"/>
+                </svg>
+            </div>
+            <div class="gauge-overlay">
+                <div class="g-val"  id="rpm-val">0</div>
+                <div class="g-unit">RPM</div>
+                <div class="g-sub"  id="rpm-pct">0%</div>
+            </div>
+        </div>
+
+    </div><!-- /gauges-row -->
+
+    <!-- ── Pedals ──────────────────────────────────────────────────────── -->
+    <div class="pedals-panel panel">
+        <div class="pedals-title">PEDALLAR</div>
+        <div class="pedal-row">
+            <div class="pedal-label">GAZ</div>
+            <div class="pedal-track"><div class="pedal-fill gas-fill"    id="ped-gas"></div></div>
+            <div class="pedal-pct" id="ped-gas-pct">0%</div>
+        </div>
+        <div class="pedal-row">
+            <div class="pedal-label">FREN</div>
+            <div class="pedal-track"><div class="pedal-fill brake-fill"  id="ped-brake"></div></div>
+            <div class="pedal-pct" id="ped-brake-pct">0%</div>
+        </div>
+        <div class="pedal-row">
+            <div class="pedal-label">KLÇ</div>
+            <div class="pedal-track"><div class="pedal-fill clutch-fill" id="ped-clutch"></div></div>
+            <div class="pedal-pct" id="ped-clutch-pct">0%</div>
+        </div>
+        <div class="pedal-extras">
+            <span class="ext-chip" id="ext-tc">TC —</span>
+            <span class="ext-chip" id="ext-abs">ABS —</span>
+            <span class="ext-chip" id="ext-map">MAP —</span>
+            <span class="ext-chip" id="ext-bb">BB —%</span>
+        </div>
+        <!-- Turbo boost -->
+        <div class="boost-section">
+            <div class="boost-header">
+                <span class="boost-lbl">TURBO BOOST</span>
+                <span class="boost-val" id="boost-val">0.00</span>
+                <span class="boost-unit">bar</span>
+            </div>
+            <div class="pedal-track">
+                <div class="pedal-fill boost-fill" id="ped-boost"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Tyres ───────────────────────────────────────────────────────── -->
+    <div class="panel tyres-panel" id="panel-tyres">
+        <div class="section-title">
+            LASTİKLER
+            <span id="tyre-compound">—</span>
+        </div>
+        <!--
+          2×2 car layout:  FL | FR
+                           RL | RR
+          Each card has a semi-circle arc (180° sweep) showing temperature,
+          plus PSI, slip bar and wear bar on the right.
+        -->
+        <div class="tyre-grid">
+
+            <!-- FL — Ön Sol -->
+            <div class="tyre-card" id="tyre-FL">
+                <div class="tc-pos">ÖN SOL</div>
+                <div class="tc-body">
+                    <svg class="tg-svg" viewBox="0 0 70 58">
+                        <circle class="tg-track" cx="35" cy="50" r="30"/>
+                        <circle class="tg-fill"  id="tg-FL" cx="35" cy="50" r="30"/>
+                        <text class="tg-temp-text" id="tt-FL" x="35" y="43">—°</text>
+                    </svg>
+                    <div class="tc-right">
+                        <div class="tc-psi-row">
+                            <span class="tc-psi-val" id="tpsi-FL">—</span>
+                            <span class="tc-psi-unit">PSI</span>
+                        </div>
+                        <div class="tc-bar-row">
+                            <span class="tc-blbl">SLIP</span>
+                            <div class="tc-bar-track"><div class="tc-bar-fill slip-fill" id="tslip-bar-FL"></div></div>
+                            <span class="tc-bval" id="tslip-FL">—</span>
+                        </div>
+                        <div class="tc-bar-row">
+                            <span class="tc-blbl">AŞIN</span>
+                            <div class="tc-bar-track"><div class="tc-wear-fill" id="twear-FL"></div></div>
+                            <span class="tc-bval" id="twear-pct-FL">—%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FR — Ön Sağ -->
+            <div class="tyre-card" id="tyre-FR">
+                <div class="tc-pos">ÖN SAĞ</div>
+                <div class="tc-body">
+                    <svg class="tg-svg" viewBox="0 0 70 58">
+                        <circle class="tg-track" cx="35" cy="50" r="30"/>
+                        <circle class="tg-fill"  id="tg-FR" cx="35" cy="50" r="30"/>
+                        <text class="tg-temp-text" id="tt-FR" x="35" y="43">—°</text>
+                    </svg>
+                    <div class="tc-right">
+                        <div class="tc-psi-row">
+                            <span class="tc-psi-val" id="tpsi-FR">—</span>
+                            <span class="tc-psi-unit">PSI</span>
+                        </div>
+                        <div class="tc-bar-row">
+                            <span class="tc-blbl">SLIP</span>
+                            <div class="tc-bar-track"><div class="tc-bar-fill slip-fill" id="tslip-bar-FR"></div></div>
+                            <span class="tc-bval" id="tslip-FR">—</span>
+                        </div>
+                        <div class="tc-bar-row">
+                            <span class="tc-blbl">AŞIN</span>
+                            <div class="tc-bar-track"><div class="tc-wear-fill" id="twear-FR"></div></div>
+                            <span class="tc-bval" id="twear-pct-FR">—%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RL — Arka Sol -->
+            <div class="tyre-card" id="tyre-RL">
+                <div class="tc-pos">ARKA SOL</div>
+                <div class="tc-body">
+                    <svg class="tg-svg" viewBox="0 0 70 58">
+                        <circle class="tg-track" cx="35" cy="50" r="30"/>
+                        <circle class="tg-fill"  id="tg-RL" cx="35" cy="50" r="30"/>
+                        <text class="tg-temp-text" id="tt-RL" x="35" y="43">—°</text>
+                    </svg>
+                    <div class="tc-right">
+                        <div class="tc-psi-row">
+                            <span class="tc-psi-val" id="tpsi-RL">—</span>
+                            <span class="tc-psi-unit">PSI</span>
+                        </div>
+                        <div class="tc-bar-row">
+                            <span class="tc-blbl">SLIP</span>
+                            <div class="tc-bar-track"><div class="tc-bar-fill slip-fill" id="tslip-bar-RL"></div></div>
+                            <span class="tc-bval" id="tslip-RL">—</span>
+                        </div>
+                        <div class="tc-bar-row">
+                            <span class="tc-blbl">AŞIN</span>
+                            <div class="tc-bar-track"><div class="tc-wear-fill" id="twear-RL"></div></div>
+                            <span class="tc-bval" id="twear-pct-RL">—%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RR — Arka Sağ -->
+            <div class="tyre-card" id="tyre-RR">
+                <div class="tc-pos">ARKA SAĞ</div>
+                <div class="tc-body">
+                    <svg class="tg-svg" viewBox="0 0 70 58">
+                        <circle class="tg-track" cx="35" cy="50" r="30"/>
+                        <circle class="tg-fill"  id="tg-RR" cx="35" cy="50" r="30"/>
+                        <text class="tg-temp-text" id="tt-RR" x="35" y="43">—°</text>
+                    </svg>
+                    <div class="tc-right">
+                        <div class="tc-psi-row">
+                            <span class="tc-psi-val" id="tpsi-RR">—</span>
+                            <span class="tc-psi-unit">PSI</span>
+                        </div>
+                        <div class="tc-bar-row">
+                            <span class="tc-blbl">SLIP</span>
+                            <div class="tc-bar-track"><div class="tc-bar-fill slip-fill" id="tslip-bar-RR"></div></div>
+                            <span class="tc-bval" id="tslip-RR">—</span>
+                        </div>
+                        <div class="tc-bar-row">
+                            <span class="tc-blbl">AŞIN</span>
+                            <div class="tc-bar-track"><div class="tc-wear-fill" id="twear-RR"></div></div>
+                            <span class="tc-bval" id="twear-pct-RR">—%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── Drift / Telemetri ──────────────────────────────────────────── -->
+    <div class="panel drift-panel" id="panel-drift">
+
+        <!-- Slip Angle -->
+        <div class="slip-angle-display">
+            <div class="slip-lbl">KAYMA AÇISI</div>
+            <div class="slip-big" id="drift-slip">0.0°</div>
+            <div class="slip-bar">
+                <div class="slip-center"></div>
+                <div class="slip-left"  id="drift-slip-left"></div>
+                <div class="slip-right" id="drift-slip-right"></div>
+            </div>
+        </div>
+
+        <!-- G-Force -->
+        <div class="gforce-block">
+            <div class="gforce-circle-wrap">
+                <svg viewBox="0 0 120 120" style="width:100%;height:100%">
+                    <circle cx="60" cy="60" r="50" class="gf-ring-outer"/>
+                    <circle cx="60" cy="60" r="25" class="gf-ring-inner"/>
+                    <line x1="60" y1="10" x2="60" y2="110" class="gf-axis"/>
+                    <line x1="10" y1="60" x2="110" y2="60" class="gf-axis"/>
+                    <circle cx="60" cy="60" r="6" class="gf-dot" id="gf-dot"/>
+                </svg>
+            </div>
+            <div class="gforce-vals">
+                <span>Lat: <b id="d-latg">0.00</b>g</span>
+                <span>Long: <b id="d-longg">0.00</b>g</span>
+            </div>
+        </div>
+
+        <!-- Drift Metrics -->
+        <div class="dmgrid">
+            <div class="dm"><div class="dm-lbl">YAW HIZI</div><div class="dm-val" id="d-yaw">0°/s</div></div>
+            <div class="dm"><div class="dm-lbl">DİREKSİYON</div><div class="dm-val" id="d-steer">0°</div></div>
+            <div class="dm"><div class="dm-lbl">OVERSTEER</div><div class="dm-val" id="d-oversteer">0.00</div></div>
+            <div class="dm"><div class="dm-lbl">YAN HIZ</div><div class="dm-val" id="d-vlat">0.0 m/s</div></div>
+        </div>
+
+        <!-- Wheel Slip Bars -->
+        <div>
+            <div class="ws-title">TEKER KAYMA</div>
+            <div class="ws-grid">
+                <div class="ws-col">
+                    <div class="ws-pos">FL</div>
+                    <div class="ws-bar-bg"><div class="ws-bar" id="ws-FL"></div></div>
+                    <div class="ws-val" id="wsv-FL">0.0</div>
+                </div>
+                <div class="ws-col">
+                    <div class="ws-pos">FR</div>
+                    <div class="ws-bar-bg"><div class="ws-bar" id="ws-FR"></div></div>
+                    <div class="ws-val" id="wsv-FR">0.0</div>
+                </div>
+                <div class="ws-col">
+                    <div class="ws-pos">RL</div>
+                    <div class="ws-bar-bg"><div class="ws-bar" id="ws-RL"></div></div>
+                    <div class="ws-val" id="wsv-RL">0.0</div>
+                </div>
+                <div class="ws-col">
+                    <div class="ws-pos">RR</div>
+                    <div class="ws-bar-bg"><div class="ws-bar" id="ws-RR"></div></div>
+                    <div class="ws-val" id="wsv-RR">0.0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Env Strip -->
+        <div class="env-strip">
+            <span>⛽ <b id="d-fuel">—</b>/<span id="d-maxfuel">—</span>L</span>
+            <span>🌡 <b id="d-airtemp">—</b>°C</span>
+            <span>🛣 <b id="d-roadtemp">—</b>°C</span>
+            <span>Turbo: <b id="d-turbo">—</b> bar</span>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="~/lib/signalr/signalr.min.js"></script>
+    <script src="~/js/dashboard.js" asp-append-version="true"></script>
+}
